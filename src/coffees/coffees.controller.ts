@@ -1,19 +1,28 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
+  Query,
   Res,
 } from '@nestjs/common';
 
 @Controller('coffees')
 export class CoffeesController {
+  // @Get()
+  // findAll(@Res() response) {
+  //   response.status(210).send('This action returns all coffees');
+  // }
+
   @Get()
-  findAll(@Res() response) {
-    response.status(210).send('This action returns all coffees');
+  findPagination(@Query() paginationQuery) {
+    const { limit, offset } = paginationQuery;
+    return `This actioins returns offset : ${offset} and limit : ${limit}`;
   }
 
   @Get(':id')
@@ -25,5 +34,15 @@ export class CoffeesController {
   @HttpCode(HttpStatus.GONE)
   create(@Body() body) {
     return body;
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() body) {
+    return `This action updates a #${id} coffee`;
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return `This action removes a #${id} coffee`;
   }
 }
