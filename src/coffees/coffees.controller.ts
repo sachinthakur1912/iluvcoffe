@@ -11,34 +11,40 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
+import { CoffeesService } from './coffees.service';
 
 @Controller('coffees')
 export class CoffeesController {
-  // @Get()
-  // findAll(@Res() response) {
-  //   response.status(210).send('This action returns all coffees');
-  // }
-
+  constructor(private readonly coffeesService: CoffeesService) {}
   @Get()
-  findPagination(@Query() paginationQuery) {
-    const { limit, offset } = paginationQuery;
-    return `This actioins returns offset : ${offset} and limit : ${limit}`;
+  findAll(@Res() response) {
+    return this.coffeesService.findAll();
+    // response.status(210).send('This action returns all coffees');
   }
+
+  // @Get()
+  // findPagination(@Query() paginationQuery) {
+  //   const { limit, offset } = paginationQuery;
+  //   return `This actioins returns offset : ${offset} and limit : ${limit}`;
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `This action returns a #${id} coffee`;
+    return this.coffeesService.findOne(id);
+    // return `This action returns a #${id} coffee`;
   }
 
   @Post()
-  @HttpCode(HttpStatus.GONE)
+  // @HttpCode(HttpStatus.GONE)
   create(@Body() body) {
-    return body;
+    return this.coffeesService.create(body);
+    // return body;
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body) {
-    return `This action updates a #${id} coffee`;
+    return this.coffeesService.update(id, body);
+    // return `This action updates a #${id} coffee`;
   }
 
   @Delete(':id')
